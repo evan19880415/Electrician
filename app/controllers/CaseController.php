@@ -119,12 +119,12 @@ class CaseController extends \BaseController {
 
 		// process the login
 		if ($validator->fails()) {
-			return Redirect::to('cases/create')
+			return Redirect::to('cases/' . $id . '/edit')
 				->withErrors($validator)
 				->withInput(Input::except('password'));
 		} else {
 			// store
-			$case = new Caseinfo;
+			$case = Caseinfo::find($id);
 			$case->name        	= Input::get('name');
 			$case->description 	= Input::get('description');
 			$case->address 		= Input::get('address');
