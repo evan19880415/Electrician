@@ -77,7 +77,9 @@ class CaseController extends \BaseController {
 	public function show($id)
 	{
 		// get the case
-		$case = CaseInfo::find($id);
+		//$case = CaseInfo::find($id);
+
+		$case = Caseinfo::find($id);
 
 		// show the view and pass the case to it
 		return View::make('cases.show')
