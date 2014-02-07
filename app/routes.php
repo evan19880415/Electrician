@@ -10,5 +10,9 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
+Route::resource('cases', 'CaseController');
 Route::resource('nerds', 'NerdController');
+Route::get('/', function()
+{
+	return Caseinfo::all();
+});
