@@ -1,14 +1,16 @@
-<!-- app/views/caes/index.blade.php -->
+<!-- app/views/cases/search.blade.php -->
 
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Electrician</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
+
 <script>
 	(function ($, window, delay) {
 	  // http://jsfiddle.net/AndreasPizsa/NzvKC/
@@ -74,68 +76,52 @@
 			</ul>
 		</li>
 		<li><a href="{{ URL::to('cases/create') }}">Create a Case</a></li>
-		<li><a href="{{ URL::to('casesSearch') }}">Search</a></li>
+		<li><a href="{{ URL::to('cases/search') }}">Search</a></li>
 	</ul>
 </nav>
 
-@if (Session::has('caseTitle'))
-	<h1>{{ Session::get('caseTitle') }}</h1>
-@endif
+<script>
+	$(function(){
+	    $("#search").click(function(){
+	        var startDate = $('#startDate').val();
+			var endDate = $('#endDate').val();
+			var type = $('#typeId').val();
 
-<!-- will be used to show any messages -->
-@if (Session::has('message'))
-	<div class="alert alert-info">{{ Session::get('message') }}</div>
-@endif
+			if(type == "All"){
+				var requestPath = "{{ URL::to('dateSearchCase') }}/"+startDate+"/"+endDate;
+			}else if(type == "Common"){
+				var requestPath = "{{ URL::to('commonCase/dateSearchCase') }}/"+startDate+"/"+endDate;
+			}
+			else{
+				var requestPath = "{{ URL::to('electronicCase/dateSearchCase') }}/"+startDate+"/"+endDate;
+			}
 
-<table class="table table-striped table-bordered">
-	<thead>
-		<tr>
-			<td>ID</td>
-			<td>Name</td>
-			<td>Type</td>
-			<td>Description</td>
-			<td>Address</td>
-			<td>Phone</td>
-			<td>Mobile</td>
-			<td>Money</td>
-			<td>Level</td>
-			<td>Actions</td>
-		</tr>
-	</thead>
-	<tbody>
-	@foreach($cases as $key => $value)
-		<tr>
-			<td>{{ $value->id }}</td>
-			<td>{{ $value->name }}</td>
-			<td>{{ $value->typeId }}</td>
-			<td>{{ $value->description}}</td>
-			<td>{{ $value->address}}</td>
-			<td>{{ $value->phone}}</td>
-			<td>{{ $value->mobile}}</td>
-			<td>{{ $value->money}}</td>
-			<td>{{ $value->level}}</td>
+			window.location.href = requestPath;
+	    });
+	});
+</script>
+<h1>Search</h1>
 
-			<!-- we will also add show, edit, and delete buttons -->
-			<td>
+	<div class="form-group">
+		<label>Start Date</label>
+		<input class="form-control" name="startDate" type="text" id="startDate">
+	</div>
 
-				<!-- delete the case (uses the destroy method DESTROY /cases/{id} -->
-				<!-- we will add this later since its a little more complicated than the other two buttons -->
-				{{ Form::open(array('url' => 'cases/' . $value->id, 'class' => 'pull-right')) }}
-					{{ Form::hidden('_method', 'DELETE') }}
-					{{ Form::submit('Delete this Case', array('class' => 'btn btn-warning')) }}
-				{{ Form::close() }}
-				
-				<!-- show the case (uses the show method found at GET /cases/{id} -->
-				<a class="btn btn-small btn-success" href="{{ URL::to('cases/' . $value->id) }}">Show this Case</a>
+	<div class="form-group">
+		<label>End Date</label>
+		<input class="form-control" name="endDate" type="text" id="endDate">
+	</div>
 
-				<!-- edit this case (uses the edit method found at GET /cases/{id}/edit -->
-				<a class="btn btn-small btn-info" href="{{ URL::to('cases/' . $value->id . '/edit') }}">Edit this Case</a>
+	<div class="form-group">
+		<label>Type</label>
+		<select class="form-control" id="typeId" name="typeId">
+			<option value="All">All</option>
+			<option value="Common">Common</option>
+			<option value="Electronic">Electronic</option>
+		</select>
+	</div>
 
-			</td>
-		</tr>
-	@endforeach
-	</tbody>
-</table>
+	<input class="btn btn-primary" type="button" value="Search" id="search">
 
 </div>
 <script type="text/javascript">

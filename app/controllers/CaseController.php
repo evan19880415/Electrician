@@ -11,7 +11,139 @@ class CaseController extends \BaseController {
 	{
 		// get all the case
 		$cases = Caseinfo::all();
+		Session::flash('caseTitle', 'All the cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
 
+
+	public function commonCase()
+	{
+		// get all the CommonCase
+		$cases = Caseinfo::where('typeId', '==',0)->get();
+		Session::flash('caseTitle', 'Common Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function electronicCase()
+	{
+		// get all the ElectronicCase
+		$cases = Caseinfo::where('typeId', '<>',0)->get();
+		Session::flash('caseTitle', 'Electronic Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function completedCase()
+	{
+		// get all the CompletedCase
+		$cases = Caseinfo::where('level', '<>',0)->get();
+		Session::flash('caseTitle', 'Completed Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function commonCompletedCase()
+	{
+		// get all the commonCompletedCase
+		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',0)->get();
+		Session::flash('caseTitle', 'Common Completed Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function electronicCompletedCase()
+	{
+		// get all the electronicCompletedCase
+		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',0)->get();
+		Session::flash('caseTitle', 'Electronic Completed Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+	
+	public function unfinishedCase()
+	{
+		// get all the unfinishedCase
+		$cases = Caseinfo::where('created_at', '<>',1)->get();
+		Session::flash('caseTitle', 'Unfinished Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function commonUnfinishedCase()
+	{
+		// get all the commonUnfinishedCase
+		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',1)->get();
+		Session::flash('caseTitle', 'Common Unfinished Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function electronicUnfinishedCase()
+	{
+		// get all the electronicUnfinishedCase
+		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',1)->get();
+		Session::flash('caseTitle', 'Electronic Unfinished Cases');
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function dateSearchCase($startDate,$endDate)
+	{
+		// get all the dateSearchCase
+		if($endDate=='-'){
+			$start = new Date($startDate);
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->get();
+			Session::flash('caseTitle', $startDate);
+		}else{
+			$end = new Date($endDate);
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->get();
+			Session::flash('caseTitle', $startDate.'~'.$endDate);
+		}
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function commonDateSearchCase($startDate,$endDate)
+	{
+		// get all the dateSearchCase
+		if($endDate=='-'){
+			$start = new Date($startDate);
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->where('typeId', '==',0)->get();
+			Session::flash('caseTitle', $startDate);
+		}else{
+			$end = new Date($endDate);
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->where('typeId', '==',0)->get();
+			Session::flash('caseTitle', $startDate.'~'.$endDate);
+		}
+		// load the view and pass the cases
+		return View::make('cases.index')
+			->with('cases', $cases);
+	}
+
+	public function electronicDateSearchCase($startDate,$endDate)
+	{
+		// get all the dateSearchCase
+		if($endDate=='-'){
+			$start = new Date($startDate);
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->where('typeId', '<>',0)->get();
+			Session::flash('caseTitle', $startDate);
+		}else{
+			$end = new Date($endDate);
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->where('typeId', '<>',0)->get();
+			Session::flash('caseTitle', $startDate.'~'.$endDate);
+		}
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);

@@ -10,9 +10,29 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-Route::resource('cases', 'CaseController');
-Route::resource('nerds', 'NerdController');
 Route::get('/', function()
 {
-	return Caseinfo::all();
+	return View::make('hello');
+});
+
+Route::resource('cases', 'CaseController');
+
+Route::get('commonCase','CaseController@commonCase');
+Route::get('electronicCase','CaseController@electronicCase');
+
+Route::get('completedCase','CaseController@completedCase');
+Route::get('commonCase/completedCase','CaseController@commonCompletedCase');
+Route::get('electronicCase/completedCase','CaseController@electronicCompletedCase');
+
+Route::get('unfinishedCase','CaseController@unfinishedCase');
+Route::get('commonCase/unfinishedCase','CaseController@commonUnfinishedCase');
+Route::get('electronicCase/unfinishedCase','CaseController@electronicUnfinishedCase');
+
+Route::get('dateSearchCase/{startDate}/{endDate}','CaseController@dateSearchCase');
+Route::get('commonCase/dateSearchCase/{startDate}/{endDate}','CaseController@commonDateSearchCase');
+Route::get('electronicCase/dateSearchCase/{startDate}/{endDate}','CaseController@electronicDateSearchCase');
+
+Route::get('casesSearch', function()
+{
+	return View::make('cases.search');
 });
