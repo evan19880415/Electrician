@@ -16,6 +16,7 @@ Route::get('/', function()
 });
 
 Route::resource('cases', 'CaseController');
+Route::post('finishedCase/{id}','CaseController@finishedCase');
 
 Route::get('commonCase','CaseController@commonCase');
 Route::get('electronicCase','CaseController@electronicCase');

@@ -275,6 +275,16 @@ class CaseController extends \BaseController {
 		}
 	}
 
+	public function finishedCase($id)
+	{
+		// get the case
+		$case = Caseinfo::find($id);
+		$case->level = 1;
+		$case->save();
+		// show the edit form and pass the nerd
+		return "Finished Case Success";
+	}
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -289,7 +299,7 @@ class CaseController extends \BaseController {
 
 		// redirect
 		Session::flash('message', 'Successfully deleted the case!');
-		return Redirect::to('cases');
+		return 'success';
 	}
 
 }

@@ -4,79 +4,52 @@
 <html>
 <head>
 	<title>Electrician</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Home</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          	<ul class="nav navbar-nav">
+				<li class="dropdown-toggle"><a href="{{ URL::to('cases') }}" class="dropdown-toggle" data-toggle="dropdown">All Cases</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('commonCase') }}">Common Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase') }}">Electronic Cases</a></li>
+					</ul>
+				</li>		
+				<li class="dropdown-toggle"><a href="{{ URL::to('completedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Completed Cases</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('commonCase/completedCase') }}">Common Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase/completedCase') }}">Electronic Cases</a></li>
+					</ul>
+				</li>
+				<li class="dropdown-toggle"><a href="{{ URL::to('unfinishedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Unfinished Cases</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('commonCase/unfinishedCase') }}">Common Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase/unfinishedCase') }}">Electronic Cases</a></li>
+					</ul>
+				</li>
+				<li><a href="{{ URL::to('cases/create') }}">Create a Case</a></li>
+				<li><a href="{{ URL::to('casesSearch') }}">Search</a></li>
+			</ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
 <div class="container">
-<script>
-	(function ($, window, delay) {
-	  // http://jsfiddle.net/AndreasPizsa/NzvKC/
-	  var theTimer = 0;
-	  var theElement = null;
-	  var theLastPosition = {x:0,y:0};
-	  $('[data-toggle]')
-	    .closest('li')
-	    .on('mouseenter', function (inEvent) {
-	    if (theElement) theElement.removeClass('open');
-	    window.clearTimeout(theTimer);
-	    theElement = $(this);
-
-	    theTimer = window.setTimeout(function () {
-	      theElement.addClass('open');
-	    }, delay);
-	  })
-	    .on('mousemove', function (inEvent) {
-	        if(Math.abs(theLastPosition.x - inEvent.ScreenX) > 4 || 
-	           Math.abs(theLastPosition.y - inEvent.ScreenY) > 4)
-	        {
-	            theLastPosition.x = inEvent.ScreenX;
-	            theLastPosition.y = inEvent.ScreenY;
-	            return;
-	        }
-	        
-	    if (theElement.hasClass('open')) return;
-	    window.clearTimeout(theTimer);
-	    theTimer = window.setTimeout(function () {
-	      theElement.addClass('open');
-	    }, delay);
-	  })
-	    .on('mouseleave', function (inEvent) {
-	    window.clearTimeout(theTimer);
-	    theElement = $(this);
-	    theTimer = window.setTimeout(function () {
-	      theElement.removeClass('open');
-	    }, delay);
-	  });
-	})(jQuery, window, 200); // 200 is the delay in milliseconds
-</script>
-<nav class="navbar navbar-inverse">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="{{ URL::to('cases') }}">HOME</a>
-	</div>
-	<ul class="nav navbar-nav">
-		<li class="dropdown-toggle"><a href="{{ URL::to('cases') }}" class="dropdown-toggle" data-toggle="dropdown">All Cases</a>
-			<ul class="dropdown-menu">
-				<li><a tabindex="-1" href="{{ URL::to('commonCase') }}">Common Cases</a></li>
-				<li><a tabindex="-1" href="{{ URL::to('electronicCase') }}">Electronic Cases</a></li>
-			</ul>
-		</li>		
-		<li class="dropdown-toggle"><a href="{{ URL::to('completedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Completed Cases</a>
-			<ul class="dropdown-menu">
-				<li><a tabindex="-1" href="{{ URL::to('commonCase/completedCase') }}">Common Cases</a></li>
-				<li><a tabindex="-1" href="{{ URL::to('electronicCase/completedCase') }}">Electronic Cases</a></li>
-			</ul>
-		</li>
-		<li class="dropdown-toggle"><a href="{{ URL::to('unfinishedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Unfinished Cases</a>
-			<ul class="dropdown-menu">
-				<li><a tabindex="-1" href="{{ URL::to('commonCase/unfinishedCase') }}">Common Cases</a></li>
-				<li><a tabindex="-1" href="{{ URL::to('electronicCase/unfinishedCase') }}">Electronic Cases</a></li>
-			</ul>
-		</li>
-		<li><a href="{{ URL::to('cases/create') }}">Create a Case</a></li>
-		<li><a href="{{ URL::to('casesSearch') }}">Search</a></li>
-	</ul>
-</nav>
 
 @if (Session::has('caseTitle'))
 	<h1>{{ Session::get('caseTitle') }}</h1>
@@ -87,59 +60,133 @@
 	<div class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
 
-<table class="table table-striped table-bordered">
-	<thead>
-		<tr>
-			<td>ID</td>
-			<td>Name</td>
-			<td>Type</td>
-			<td>Description</td>
-			<td>Address</td>
-			<td>Phone</td>
-			<td>Mobile</td>
-			<td>Money</td>
-			<td>Level</td>
-			<td>Actions</td>
-		</tr>
-	</thead>
-	<tbody>
-	@foreach($cases as $key => $value)
-		<tr>
-			<td>{{ $value->id }}</td>
-			<td>{{ $value->name }}</td>
-			<td>{{ $value->typeId }}</td>
-			<td>{{ $value->description}}</td>
-			<td>{{ $value->address}}</td>
-			<td>{{ $value->phone}}</td>
-			<td>{{ $value->mobile}}</td>
-			<td>{{ $value->money}}</td>
-			<td>{{ $value->level}}</td>
-
-			<!-- we will also add show, edit, and delete buttons -->
-			<td>
-
-				<!-- delete the case (uses the destroy method DESTROY /cases/{id} -->
-				<!-- we will add this later since its a little more complicated than the other two buttons -->
-				{{ Form::open(array('url' => 'cases/' . $value->id, 'class' => 'pull-right')) }}
-					{{ Form::hidden('_method', 'DELETE') }}
-					{{ Form::submit('Delete this Case', array('class' => 'btn btn-warning')) }}
-				{{ Form::close() }}
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
 				
-				<!-- show the case (uses the show method found at GET /cases/{id} -->
-				<a class="btn btn-small btn-success" href="{{ URL::to('cases/' . $value->id) }}">Show this Case</a>
+				<td>Actions</td>
+			</tr>
+		</thead>
+		<tbody>
+		@foreach($cases as $key => $value)
+			<tr>
+				<td>{{ $value->id }}</td>
+				<td>{{ $value->name }}</td>
+				
+				<!-- we will also add show, edit, and delete buttons -->
+				<td>
+					@if ($value->level == 0)
+						<a class="btn btn-xs btn-primary confirm-done" href="#" data-id="{{$value->id}}">Done</a>
+					@else
+						<a class="btn btn-xs btn-primary" disabled="disabled" href="#">Done</a>
+					@endif
+					<!-- show the case (uses the show method found at GET /cases/{id} -->
+					<a class="btn btn-xs btn-success" href="{{ URL::to('cases/' . $value->id) }}">Show</a>
 
-				<!-- edit this case (uses the edit method found at GET /cases/{id}/edit -->
-				<a class="btn btn-small btn-info" href="{{ URL::to('cases/' . $value->id . '/edit') }}">Edit this Case</a>
+					<!-- edit this case (uses the edit method found at GET /cases/{id}/edit -->
+					<a class="btn btn-xs btn-info" href="{{ URL::to('cases/' . $value->id . '/edit') }}">Edit</a>
 
-			</td>
-		</tr>
-	@endforeach
-	</tbody>
-</table>
+					<a class="btn btn-xs btn-warning confirm-delete" href="#" data-id="{{$value->id}}">Delete</a>
 
+				</td>
+			</tr>
+		@endforeach
+		</tbody>
+	</table>
+
+	<ul class="pager">
+	  <li><a href="#">Previous</a></li>
+	  <li><a href="#">Next</a></li>
+	</ul>
+
+	<!--Done Comfirm Dialog-->
+	<div id="modal-done" class="modal">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+	            <h3>Finished?</h3>
+	        </div>
+	        <div class="modal-body">
+	             <p>Have you finished this case?</p>
+	        </div>
+	        <div class="modal-footer">
+	          <a href="#" id="btnDoneYes" class="btn btn-default">OK</a>
+	          <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Cancel</a>
+	        </div>
+	      </div>
+	    </div>
+	</div>
+
+	<!--Delete Comfirm Dialog-->
+	<div id="modal-delete" class="modal">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+	            <h3>Are you sure?</h3>
+	        </div>
+	        <div class="modal-body">
+	             <p>Do you want to delete this record?</p>
+	        </div>
+	        <div class="modal-footer">
+	          <a href="#" id="btnDeleteYes" class="btn btn-default">OK</a>
+	          <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Cancel</a>
+	        </div>
+	      </div>
+	    </div>
+	</div>
 </div>
-<script type="text/javascript">
-(function(e,d,b){var a=0;var f=null;var c={x:0,y:0};e("[data-toggle]").closest("li").on("mouseenter",function(g){if(f){f.removeClass("open")}d.clearTimeout(a);f=e(this);a=d.setTimeout(function(){f.addClass("open")},b)}).on("mousemove",function(g){if(Math.abs(c.x-g.ScreenX)>4||Math.abs(c.y-g.ScreenY)>4){c.x=g.ScreenX;c.y=g.ScreenY;return}if(f.hasClass("open")){return}d.clearTimeout(a);a=d.setTimeout(function(){f.addClass("open")},b)}).on("mouseleave",function(g){d.clearTimeout(a);f=e(this);a=d.setTimeout(function(){f.removeClass("open")},b)})})(jQuery,window,200);
+<script>
+	//handle done comfirm dialog modal
+	$('.confirm-done').on('click', function(e) {
+		e.preventDefault();
+
+		var id = $(this).data('id');
+		$('#modal-done').data('id', id).modal('show');
+	});
+	$('#btnDoneYes').click(function() {
+		// handle deletion here
+		var id = $('#modal-done').data('id');
+		var path = "../finishedCase/"+id;
+		$.ajax({
+			url: path,
+			type: 'POST',
+			success: function(){
+				   window.location.href = window.location.pathname;
+				  },
+				  error: function(){
+				   alert('The delete method failed.');        
+				  }
+		});
+	});
+
+	//handle delete comfirm dialog modal
+	$('.confirm-delete').on('click', function(e) {
+		e.preventDefault();
+
+		var id = $(this).data('id');
+		$('#modal-delete').data('id', id).modal('show');
+	});
+	$('#btnDeleteYes').click(function() {
+		// handle deletion here
+		var id = $('#modal-delete').data('id');
+		var deletePath = "../cases/"+id;
+		$.ajax({
+			url: deletePath,
+			type: 'DELETE',
+			success: function(){
+				   window.location.href = window.location.pathname;
+				  },
+				  error: function(){
+				   alert('The delete method failed.');        
+				  }
+		});
+	});	
 </script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 </body>
 </html>
