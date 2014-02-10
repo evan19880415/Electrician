@@ -1,5 +1,4 @@
-<!-- app/views/nerds/edit.blade.php -->
-<!-- app/views/nerds/edit.blade.php -->
+<!-- app/views/cases/edit.blade.php -->
 
 <!DOCTYPE html>
 <html>
@@ -22,37 +21,48 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Home</a>
+          <a class="navbar-brand" href="{{ URL::to('cases') }}">順光</a>
         </div>
         <div class="collapse navbar-collapse">
           	<ul class="nav navbar-nav">
-				<li class="dropdown-toggle"><a href="{{ URL::to('cases') }}" class="dropdown-toggle" data-toggle="dropdown">All Cases</a>
+				<li class="dropdown-toggle"><a href="{{ URL::to('cases') }}" class="dropdown-toggle" data-toggle="dropdown">事項</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="{{ URL::to('commonCase') }}">Common Cases</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('electronicCase') }}">Electronic Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('commonCase') }}">一般事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase') }}">請水電事項</a></li>
 					</ul>
 				</li>		
-				<li class="dropdown-toggle"><a href="{{ URL::to('completedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Completed Cases</a>
+				<li class="dropdown-toggle"><a href="{{ URL::to('completedCase') }}" class="dropdown-toggle" data-toggle="dropdown">完工事項</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="{{ URL::to('commonCase/completedCase') }}">Common Cases</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('electronicCase/completedCase') }}">Electronic Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('commonCase/completedCase') }}">一般事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase/completedCase') }}">請水電事項</a></li>
 					</ul>
 				</li>
-				<li class="dropdown-toggle"><a href="{{ URL::to('unfinishedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Unfinished Cases</a>
+				<li class="dropdown-toggle"><a href="{{ URL::to('unfinishedCase') }}" class="dropdown-toggle" data-toggle="dropdown">未完工事項</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="{{ URL::to('commonCase/unfinishedCase') }}">Common Cases</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('electronicCase/unfinishedCase') }}">Electronic Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('commonCase/unfinishedCase') }}">一般事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase/unfinishedCase') }}">請水電事項</a></li>
 					</ul>
 				</li>
-				<li><a href="{{ URL::to('cases/create') }}">Create a Case</a></li>
-				<li><a href="{{ URL::to('casesSearch') }}">Search</a></li>
+				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">事項功能</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('cases/create') }}">新增事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('casesSearch') }}">日期查詢</a></li>
+					</ul>
+				</li>
+				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">客戶相關</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('customers') }}">客戶資料</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('customers/create') }}">新增客戶</a></li>
+					</ul>
+				</li>
+				<li><a href="{{ URL::to('logout') }}">登出</a></li>
 			</ul>
         </div><!--/.nav-collapse -->
     </div>
 </div>
 <div class="container">
 
-<h1>Edit {{ $case->name }}</h1>
+<h1>編輯 - {{ $case->name }}</h1>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -60,48 +70,50 @@
 {{ Form::model($case, array('route' => array('cases.update', $case->id), 'method' => 'PUT')) }}
 
 	<div class="form-group">
-		{{ Form::label('name', 'Name') }}
+		{{ Form::label('name', '姓名') }}
 		{{ Form::text('name', Input::old('name'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('typeId', 'Type') }}
-		{{ Form::select('typeId', array('0' => 'Select Type', '1' => 'Water', '2' => 'Electronic'), Input::old('typeId'), array('class' => 'form-control')) }}
+		{{ Form::label('typeId', '類型') }}
+		{{ Form::select('typeId', array('0' => '預設事項', '1' => '水', '2' => '電'), Input::old('typeId'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('description', 'Description') }}
+		{{ Form::label('description', '工作內容') }}
 		{{ Form::text('description', Input::old('description'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('address', 'Address') }}
+		{{ Form::label('address', '住址') }}
 		{{ Form::text('address', Input::old('address'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('phone', 'Phone') }}
+		{{ Form::label('phone', '電話') }}
 		{{ Form::text('phone', Input::old('phone'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('mobile', 'Mobile') }}
+		{{ Form::label('mobile', '手機') }}
 		{{ Form::text('mobile', Input::old('mobile'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('money', 'Money') }}
+		{{ Form::label('invoice', '發票號碼') }}
+		{{ Form::text('invoice', Input::old('invoice'), array('class' => 'form-control')) }}
+	</div>
+	
+	<div class="form-group">
+		{{ Form::label('money', '金額') }}
 		{{ Form::text('money', Input::old('money'), array('class' => 'form-control')) }}
 	</div>
 
-	{{ Form::submit('Edit the Case!', array('class' => 'btn btn-primary')) }}
+	{{ Form::submit('編輯', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}
 
 </div>
-<script type="text/javascript">
-(function(e,d,b){var a=0;var f=null;var c={x:0,y:0};e("[data-toggle]").closest("li").on("mouseenter",function(g){if(f){f.removeClass("open")}d.clearTimeout(a);f=e(this);a=d.setTimeout(function(){f.addClass("open")},b)}).on("mousemove",function(g){if(Math.abs(c.x-g.ScreenX)>4||Math.abs(c.y-g.ScreenY)>4){c.x=g.ScreenX;c.y=g.ScreenY;return}if(f.hasClass("open")){return}d.clearTimeout(a);a=d.setTimeout(function(){f.addClass("open")},b)}).on("mouseleave",function(g){d.clearTimeout(a);f=e(this);a=d.setTimeout(function(){f.removeClass("open")},b)})})(jQuery,window,200);
-</script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 </body>

@@ -21,30 +21,41 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Home</a>
+          <a class="navbar-brand" href="{{ URL::to('cases') }}">順光</a>
         </div>
         <div class="collapse navbar-collapse">
           	<ul class="nav navbar-nav">
-				<li class="dropdown-toggle"><a href="{{ URL::to('cases') }}" class="dropdown-toggle" data-toggle="dropdown">All Cases</a>
+				<li class="dropdown-toggle"><a href="{{ URL::to('cases') }}" class="dropdown-toggle" data-toggle="dropdown">事項</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="{{ URL::to('commonCase') }}">Common Cases</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('electronicCase') }}">Electronic Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('commonCase') }}">一般事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase') }}">請水電事項</a></li>
 					</ul>
 				</li>		
-				<li class="dropdown-toggle"><a href="{{ URL::to('completedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Completed Cases</a>
+				<li class="dropdown-toggle"><a href="{{ URL::to('completedCase') }}" class="dropdown-toggle" data-toggle="dropdown">完工事項</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="{{ URL::to('commonCase/completedCase') }}">Common Cases</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('electronicCase/completedCase') }}">Electronic Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('commonCase/completedCase') }}">一般事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase/completedCase') }}">請水電事項</a></li>
 					</ul>
 				</li>
-				<li class="dropdown-toggle"><a href="{{ URL::to('unfinishedCase') }}" class="dropdown-toggle" data-toggle="dropdown">Unfinished Cases</a>
+				<li class="dropdown-toggle"><a href="{{ URL::to('unfinishedCase') }}" class="dropdown-toggle" data-toggle="dropdown">未完工事項</a>
 					<ul class="dropdown-menu">
-						<li><a tabindex="-1" href="{{ URL::to('commonCase/unfinishedCase') }}">Common Cases</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('electronicCase/unfinishedCase') }}">Electronic Cases</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('commonCase/unfinishedCase') }}">一般事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('electronicCase/unfinishedCase') }}">請水電事項</a></li>
 					</ul>
 				</li>
-				<li><a href="{{ URL::to('cases/create') }}">Create a Case</a></li>
-				<li><a href="{{ URL::to('casesSearch') }}">Search</a></li>
+				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">事項功能</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('cases/create') }}">新增事項</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('casesSearch') }}">日期查詢</a></li>
+					</ul>
+				</li>
+				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">客戶相關</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('customers') }}">客戶資料</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('customers/create') }}">新增客戶</a></li>
+					</ul>
+				</li>
+				<li><a href="{{ URL::to('logout') }}">登出</a></li>
 			</ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -63,43 +74,43 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<td>ID</td>
-				<td>Name</td>
+				<td>姓名</td>
 				
-				<td>Actions</td>
+				<td>功能</td>
 			</tr>
 		</thead>
 		<tbody>
 		@foreach($cases as $key => $value)
 			<tr>
-				<td>{{ $value->id }}</td>
 				<td>{{ $value->name }}</td>
 				
 				<!-- we will also add show, edit, and delete buttons -->
 				<td>
 					@if ($value->level == 0)
-						<a class="btn btn-xs btn-primary confirm-done" href="#" data-id="{{$value->id}}">Done</a>
+							<a class="btn btn-xs btn-primary confirm-done" href="#" data-id="{{$value->id}}">完工</a>	
+					@elseif($value->level == 1)
+						<a class="btn btn-xs btn-primary" disabled="disabled" href="#">完工</a>
 					@else
-						<a class="btn btn-xs btn-primary" disabled="disabled" href="#">Done</a>
+						<a class="btn btn-xs btn-warning" href="#">已收款</a>	
 					@endif
 					<!-- show the case (uses the show method found at GET /cases/{id} -->
-					<a class="btn btn-xs btn-success" href="{{ URL::to('cases/' . $value->id) }}">Show</a>
+					<a class="btn btn-xs btn-success" href="{{ URL::to('cases/' . $value->id) }}">資料</a>
 
 					<!-- edit this case (uses the edit method found at GET /cases/{id}/edit -->
-					<a class="btn btn-xs btn-info" href="{{ URL::to('cases/' . $value->id . '/edit') }}">Edit</a>
+					<a class="btn btn-xs btn-info" href="{{ URL::to('cases/' . $value->id . '/edit') }}">編輯</a>
 
-					<a class="btn btn-xs btn-warning confirm-delete" href="#" data-id="{{$value->id}}">Delete</a>
+					<a class="btn btn-xs btn-danger confirm-delete" href="#" data-id="{{$value->id}}">刪除</a>
 
 				</td>
 			</tr>
 		@endforeach
 		</tbody>
 	</table>
-
-	<ul class="pager">
+	{{ $cases->links() }}
+	<!--<ul class="pager">
 	  <li><a href="#">Previous</a></li>
 	  <li><a href="#">Next</a></li>
-	</ul>
+	</ul>-->
 
 	<!--Done Comfirm Dialog-->
 	<div id="modal-done" class="modal">
@@ -107,10 +118,10 @@
 	      <div class="modal-content">
 	        <div class="modal-header">
 	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
-	            <h3>Finished?</h3>
+	            <h3>完工了嗎?</h3>
 	        </div>
 	        <div class="modal-body">
-	             <p>Have you finished this case?</p>
+	             <p>如果已完工，點選'OK'</p>
 	        </div>
 	        <div class="modal-footer">
 	          <a href="#" id="btnDoneYes" class="btn btn-default">OK</a>
@@ -126,10 +137,10 @@
 	      <div class="modal-content">
 	        <div class="modal-header">
 	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
-	            <h3>Are you sure?</h3>
+	            <h3>你確定嗎?</h3>
 	        </div>
 	        <div class="modal-body">
-	             <p>Do you want to delete this record?</p>
+	             <p>如果想刪除此筆資料，點選'OK'?</p>
 	        </div>
 	        <div class="modal-footer">
 	          <a href="#" id="btnDeleteYes" class="btn btn-default">OK</a>
@@ -150,16 +161,16 @@
 	$('#btnDoneYes').click(function() {
 		// handle deletion here
 		var id = $('#modal-done').data('id');
-		var path = "../finishedCase/"+id;
+		var path = "{{ URL::to('finishedCase/') }}";
 		$.ajax({
-			url: path,
+			url: path+"/"+id,
 			type: 'POST',
 			success: function(){
-				   window.location.href = window.location.pathname;
-				  },
-				  error: function(){
-				   alert('The delete method failed.');        
-				  }
+				window.location.href = window.location.pathname;
+			},
+			error: function(){
+				alert('The done method failed.');        
+			}
 		});
 	});
 
@@ -173,16 +184,16 @@
 	$('#btnDeleteYes').click(function() {
 		// handle deletion here
 		var id = $('#modal-delete').data('id');
-		var deletePath = "../cases/"+id;
+		var deletePath = "{{ URL::to('cases/') }}";
 		$.ajax({
-			url: deletePath,
+			url: deletePath+"/"+id,
 			type: 'DELETE',
 			success: function(){
-				   window.location.href = window.location.pathname;
-				  },
-				  error: function(){
-				   alert('The delete method failed.');        
-				  }
+				window.location.href = window.location.pathname;
+			},
+			error: function(){
+				alert('The delete method failed.');        
+			}
 		});
 	});	
 </script>

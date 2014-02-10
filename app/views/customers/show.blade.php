@@ -1,4 +1,4 @@
-<!-- app/views/cases/search.blade.php -->
+<!-- app/views/customers/show.blade.php -->
 
 <!DOCTYPE html>
 <html>
@@ -62,77 +62,32 @@
 </div>
 <div class="container">
 
-<script>
-	$(function(){
-	    $("#search").click(function(){
-	        var startDate = $('#startDate').val();
-			var endDate = $('#endDate').val();
-			var type = $('#typeId').val();
 
-			if(type == "All"){
-				var requestPath = "{{ URL::to('dateSearchCase') }}/"+startDate+"/"+endDate;
-			}else if(type == "Common"){
-				var requestPath = "{{ URL::to('commonCase/dateSearchCase') }}/"+startDate+"/"+endDate;
-			}
-			else{
-				var requestPath = "{{ URL::to('electronicCase/dateSearchCase') }}/"+startDate+"/"+endDate;
-			}
+<h1>客戶資料</h1>
 
-			window.location.href = requestPath;
-	    });
-
-	    //prevent soft keypad on android
-	    $('#startDate').click(function(){
-	    	this.blur();
-	    });
-	    $('#endDate').click(function(){
-	    	this.blur();
-	    });	
-	    
-	    $('#startDate').datepicker({
-		    format: "yyyy-mm-dd",
-    		autoclose: true,
-    		language: 'zh-TW'
-		});
-
-		$("#startDate").datepicker("setDate", new Date());
-		$("#startDate").datepicker('update');
-
-	    $('#endDate').datepicker({
-		    format: "yyyy-mm-dd",
-    		autoclose: true,
-    		language: 'zh-TW'
-		});
-	});
-</script>
-<h1>日期查詢</h1>
-
-	<div class="form-group">
-		<label>開始日期</label>
-		<input class="form-control" name="startDate" type="text" id="startDate">
+	<div class="jumbotron">
+		<h2>{{ $customer->name }}</h2>
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td><strong>住址</strong></td>
+					<td>{{ $customer->address }}</td>
+				</tr>
+				<tr class="success">
+					<td><strong>電話</strong> </td>
+					<td>{{ $customer->phone }}</td>
+				</tr>
+				<tr>
+					<td><strong>手機</strong></td>
+					<td>{{ $customer->mobile }}</td>
+				</tr>			
+			</tbody>
+		</table>
 	</div>
-
-	<div class="form-group">
-		<label>結束日期</label>
-		<input class="form-control" name="endDate" type="text" id="endDate" value="-">
-	</div>
-
-	<div class="form-group">
-		<label>Type</label>
-		<select class="form-control" id="typeId" name="typeId">
-			<option value="All">全部</option>
-			<option value="Common">一般事項</option>
-			<option value="Electronic">請水電事項</option>
-		</select>
-	</div>
-
-	<input class="btn btn-primary" type="button" value="查詢" id="search">
 
 </div>
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/locales/bootstrap-datepicker.zh-TW.js"></script>
 </body>
 </html>

@@ -12,28 +12,52 @@
 */
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('login');
 });
 
-Route::resource('cases', 'CaseController');
-Route::post('finishedCase/{id}','CaseController@finishedCase');
-
-Route::get('commonCase','CaseController@commonCase');
-Route::get('electronicCase','CaseController@electronicCase');
-
-Route::get('completedCase','CaseController@completedCase');
-Route::get('commonCase/completedCase','CaseController@commonCompletedCase');
-Route::get('electronicCase/completedCase','CaseController@electronicCompletedCase');
-
-Route::get('unfinishedCase','CaseController@unfinishedCase');
-Route::get('commonCase/unfinishedCase','CaseController@commonUnfinishedCase');
-Route::get('electronicCase/unfinishedCase','CaseController@electronicUnfinishedCase');
-
-Route::get('dateSearchCase/{startDate}/{endDate}','CaseController@dateSearchCase');
-Route::get('commonCase/dateSearchCase/{startDate}/{endDate}','CaseController@commonDateSearchCase');
-Route::get('electronicCase/dateSearchCase/{startDate}/{endDate}','CaseController@electronicDateSearchCase');
-
-Route::get('casesSearch', function()
+Route::filter('admin_auth', function()
 {
-	return View::make('cases.search');
+    if(Auth::guest() || Auth::user()=='') {
+        return Redirect::to('login');
+    }
 });
+
+Route::group(array('before' => 'admin_auth'), function()
+{
+	//Caes
+	Route::resource('cases', 'CaseController');
+	Route::post('finishedCase/{id}','CaseController@finishedCase');
+
+	Route::get('commonCase','CaseController@commonCase');
+	Route::get('electronicCase','CaseController@electronicCase');
+
+	Route::get('completedCase','CaseController@completedCase');
+	Route::get('commonCase/completedCase','CaseController@commonCompletedCase');
+	Route::get('electronicCase/completedCase','CaseController@electronicCompletedCase');
+
+	Route::get('unfinishedCase','CaseController@unfinishedCase');
+	Route::get('commonCase/unfinishedCase','CaseController@commonUnfinishedCase');
+	Route::get('electronicCase/unfinishedCase','CaseController@electronicUnfinishedCase');
+
+	Route::get('dateSearchCase/{startDate}/{endDate}','CaseController@dateSearchCase');
+	Route::get('commonCase/dateSearchCase/{startDate}/{endDate}','CaseController@commonDateSearchCase');
+	Route::get('electronicCase/dateSearchCase/{startDate}/{endDate}','CaseController@electronicDateSearchCase');
+
+	Route::get('casesSearch', function()
+	{
+		return View::make('cases.search');
+	});
+
+	//Customer
+	Route::resource('customers', 'CustomerController');
+	Route::get('customerSearch/{text}','CustomerController@customerSearch');
+
+});	
+
+// route to show the login formcases
+Route::get('login', array('uses' => 'HomeController@showLogin'));
+
+// route to process the form
+Route::post('login', array('uses' => 'HomeController@doLogin'));
+
+Route::get('logout', array('uses' => 'HomeController@doLogout'));

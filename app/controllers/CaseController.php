@@ -10,8 +10,8 @@ class CaseController extends \BaseController {
 	public function index()
 	{
 		// get all the case
-		$cases = Caseinfo::all();
-		Session::flash('caseTitle', 'All the cases');
+		$cases = Caseinfo::paginate(10);
+		Session::flash('caseTitle', '所有事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -21,8 +21,8 @@ class CaseController extends \BaseController {
 	public function commonCase()
 	{
 		// get all the CommonCase
-		$cases = Caseinfo::where('typeId', '==',0)->get();
-		Session::flash('caseTitle', 'Common Cases');
+		$cases = Caseinfo::where('typeId', '==',0)->paginate(10);
+		Session::flash('caseTitle', '一般事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -31,8 +31,8 @@ class CaseController extends \BaseController {
 	public function electronicCase()
 	{
 		// get all the ElectronicCase
-		$cases = Caseinfo::where('typeId', '<>',0)->get();
-		Session::flash('caseTitle', 'Electronic Cases');
+		$cases = Caseinfo::where('typeId', '<>',0)->paginate(10);
+		Session::flash('caseTitle', '請水電事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -41,8 +41,8 @@ class CaseController extends \BaseController {
 	public function completedCase()
 	{
 		// get all the CompletedCase
-		$cases = Caseinfo::where('level', '<>',0)->get();
-		Session::flash('caseTitle', 'Completed Cases');
+		$cases = Caseinfo::where('level', '<>',0)->paginate(10);
+		Session::flash('caseTitle', '完工事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -51,8 +51,8 @@ class CaseController extends \BaseController {
 	public function commonCompletedCase()
 	{
 		// get all the commonCompletedCase
-		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',0)->get();
-		Session::flash('caseTitle', 'Common Completed Cases');
+		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',0)->paginate(10);
+		Session::flash('caseTitle', '完工事項(一般)');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -61,8 +61,8 @@ class CaseController extends \BaseController {
 	public function electronicCompletedCase()
 	{
 		// get all the electronicCompletedCase
-		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',0)->get();
-		Session::flash('caseTitle', 'Electronic Completed Cases');
+		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',0)->paginate(10);
+		Session::flash('caseTitle', '完工事項(請水電)');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -71,8 +71,8 @@ class CaseController extends \BaseController {
 	public function unfinishedCase()
 	{
 		// get all the unfinishedCase
-		$cases = Caseinfo::where('created_at', '<>',1)->get();
-		Session::flash('caseTitle', 'Unfinished Cases');
+		$cases = Caseinfo::where('created_at', '<>',1)->paginate(10);
+		Session::flash('caseTitle', '未完工事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -81,8 +81,8 @@ class CaseController extends \BaseController {
 	public function commonUnfinishedCase()
 	{
 		// get all the commonUnfinishedCase
-		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',1)->get();
-		Session::flash('caseTitle', 'Common Unfinished Cases');
+		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',1)->paginate(10);
+		Session::flash('caseTitle', '未完工事項(一般)');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -91,8 +91,8 @@ class CaseController extends \BaseController {
 	public function electronicUnfinishedCase()
 	{
 		// get all the electronicUnfinishedCase
-		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',1)->get();
-		Session::flash('caseTitle', 'Electronic Unfinished Cases');
+		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',1)->paginate(10);
+		Session::flash('caseTitle', '未完工事項(請水電)');
 		// load the view and pass the cases
 		return View::make('cases.index')
 			->with('cases', $cases);
@@ -103,11 +103,11 @@ class CaseController extends \BaseController {
 		// get all the dateSearchCase
 		if($endDate=='-'){
 			$start = new Date($startDate);
-			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->get();
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->paginate(10);
 			Session::flash('caseTitle', $startDate);
 		}else{
 			$end = new Date($endDate);
-			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->get();
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->paginate(10);
 			Session::flash('caseTitle', $startDate.'~'.$endDate);
 		}
 		// load the view and pass the cases
@@ -120,11 +120,11 @@ class CaseController extends \BaseController {
 		// get all the dateSearchCase
 		if($endDate=='-'){
 			$start = new Date($startDate);
-			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->where('typeId', '==',0)->get();
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->where('typeId', '==',0)->paginate(10);
 			Session::flash('caseTitle', $startDate);
 		}else{
 			$end = new Date($endDate);
-			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->where('typeId', '==',0)->get();
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->where('typeId', '==',0)->paginate(10);
 			Session::flash('caseTitle', $startDate.'~'.$endDate);
 		}
 		// load the view and pass the cases
@@ -137,11 +137,11 @@ class CaseController extends \BaseController {
 		// get all the dateSearchCase
 		if($endDate=='-'){
 			$start = new Date($startDate);
-			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->where('typeId', '<>',0)->get();
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $start->add('1 day'))->where('typeId', '<>',0)->paginate(10);
 			Session::flash('caseTitle', $startDate);
 		}else{
 			$end = new Date($endDate);
-			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->where('typeId', '<>',0)->get();
+			$cases = Caseinfo::where('created_at', '>', $startDate)->where('created_at', '<', $end->add('1 day'))->where('typeId', '<>',0)->paginate(10);
 			Session::flash('caseTitle', $startDate.'~'.$endDate);
 		}
 		// load the view and pass the cases
@@ -190,6 +190,7 @@ class CaseController extends \BaseController {
 			$case->phone 		= Input::get('phone');
 			$case->mobile 		= Input::get('mobile');
 			$case->money 		= Input::get('money');
+			$case->invoice 		= Input::get('invoice');
 			$case->typeId 		= Input::get('typeId');
 			$case->level       	= Input::get('level');
 			$case->save();
@@ -213,9 +214,38 @@ class CaseController extends \BaseController {
 
 		$case = Caseinfo::find($id);
 
+		switch ($case->typeId) {
+		   case 0:
+		         $caseType = '一般事項';
+		         break;
+		   case 1:
+		         $caseType = '水';
+		         break;
+		   case 2:
+		         $caseType = '電';
+		         break;
+		}
+
+		
+		switch ($case->level) {
+			case 0:
+			    $caseLevel = '未完工';
+			    break;
+			case 1:
+			    $caseLevel = '已完工';
+			    break;
+  			case 2:
+			    $caseLevel = '已收款';
+			    break;
+		}
+		
+		
+
 		// show the view and pass the case to it
 		return View::make('cases.show')
-			->with('case', $case);
+			->with('case', $case)
+			->with('caseType', $caseType)
+			->with('caseLevel', $caseLevel);
 	}
 
 	/**
@@ -265,8 +295,13 @@ class CaseController extends \BaseController {
 			$case->phone 		= Input::get('phone');
 			$case->mobile 		= Input::get('mobile');
 			$case->money 		= Input::get('money');
+			$case->invoice 		= Input::get('invoice');
 			$case->typeId 		= Input::get('typeId');
-			$case->level       	= Input::get('level');
+			if($case->money == 0){
+				$case->level       	= Input::get('level');
+			}else{
+				$case->level       	= 2;
+			}
 			$case->save();
 
 			// redirect

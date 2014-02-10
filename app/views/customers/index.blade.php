@@ -1,4 +1,4 @@
-<!-- app/views/cases/search.blade.php -->
+<!-- app/views/customers/index.blade.php -->
 
 <!DOCTYPE html>
 <html>
@@ -62,77 +62,106 @@
 </div>
 <div class="container">
 
+@if (Session::has('customerTitle'))
+	<h1>{{ Session::get('customerTitle') }}</h1>
+@endif
+
+<!-- will be used to show any messages -->
+@if (Session::has('message'))
+	<div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
+	<div class="input-group">
+		<input class="form-control" name="search" type="text" id="searchText" placeholder="輸入想搜尋的姓名或電話">
+		<div class="input-group-btn">
+            <button class="btn btn-default" type="submit" id="searchButton"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+	</div>
+	</br>
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>姓名</td>
+					<td>電話</td>
+					<td>功能</td>
+				</tr>
+			</thead>
+			<tbody>
+			@foreach($customers as $key => $value)
+				<tr>
+					<td>{{ $value->name }}</td>
+					<td>{{ $value->phone }}</td>
+					<!-- we will also add show, edit, and delete buttons -->
+					<td>
+						<!-- show the customers (uses the show method found at GET /cases/{id} -->
+						<a class="btn btn-xs btn-success" href="{{ URL::to('customers/' . $value->id) }}">資料</a>
+
+						<!-- edit this customers (uses the edit method found at GET /cases/{id}/edit -->
+						<a class="btn btn-xs btn-info" href="{{ URL::to('customers/' . $value->id . '/edit') }}">編輯</a>
+
+						<a class="btn btn-xs btn-danger confirm-delete" href="#" data-id="{{$value->id}}">刪除</a>
+
+					</td>
+				</tr>
+			@endforeach
+			</tbody>
+		</table>
+		{{ $customers->links() }}
+	</div>	
+
+	<!--Delete Comfirm Dialog-->
+	<div id="modal-delete" class="modal">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+	            <h3>你確定嗎?</h3>
+	        </div>
+	        <div class="modal-body">
+	             <p>如果想刪除此筆資料，點選'OK'?</p>
+	        </div>
+	        <div class="modal-footer">
+	          <a href="#" id="btnDeleteYes" class="btn btn-default">OK</a>
+	          <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Cancel</a>
+	        </div>
+	      </div>
+	    </div>
+	</div>
+</div>
 <script>
-	$(function(){
-	    $("#search").click(function(){
-	        var startDate = $('#startDate').val();
-			var endDate = $('#endDate').val();
-			var type = $('#typeId').val();
+	//handle delete comfirm dialog modal
+	$('.confirm-delete').on('click', function(e) {
+		e.preventDefault();
 
-			if(type == "All"){
-				var requestPath = "{{ URL::to('dateSearchCase') }}/"+startDate+"/"+endDate;
-			}else if(type == "Common"){
-				var requestPath = "{{ URL::to('commonCase/dateSearchCase') }}/"+startDate+"/"+endDate;
+		var id = $(this).data('id');
+		$('#modal-delete').data('id', id).modal('show');
+	});
+
+	$('#btnDeleteYes').click(function() {
+		// handle deletion here
+		var id = $('#modal-delete').data('id');
+		var deletePath = "{{ URL::to('customers/') }}";
+		$.ajax({
+			url: deletePath+"/"+id,
+			type: 'DELETE',
+			success: function(){
+				window.location.href = window.location.pathname;
+			},
+			error: function(){
+				alert('The delete method failed.');        
 			}
-			else{
-				var requestPath = "{{ URL::to('electronicCase/dateSearchCase') }}/"+startDate+"/"+endDate;
-			}
-
-			window.location.href = requestPath;
-	    });
-
-	    //prevent soft keypad on android
-	    $('#startDate').click(function(){
-	    	this.blur();
-	    });
-	    $('#endDate').click(function(){
-	    	this.blur();
-	    });	
-	    
-	    $('#startDate').datepicker({
-		    format: "yyyy-mm-dd",
-    		autoclose: true,
-    		language: 'zh-TW'
-		});
-
-		$("#startDate").datepicker("setDate", new Date());
-		$("#startDate").datepicker('update');
-
-	    $('#endDate').datepicker({
-		    format: "yyyy-mm-dd",
-    		autoclose: true,
-    		language: 'zh-TW'
 		});
 	});
+
+	//Customer Search
+	$("#searchButton").click(function(){
+	    var searchText = $('#searchText').val();
+	    var path = "{{ URL::to('customerSearch') }}";
+
+		window.location.href = path+"/"+searchText;
+	});	
 </script>
-<h1>日期查詢</h1>
-
-	<div class="form-group">
-		<label>開始日期</label>
-		<input class="form-control" name="startDate" type="text" id="startDate">
-	</div>
-
-	<div class="form-group">
-		<label>結束日期</label>
-		<input class="form-control" name="endDate" type="text" id="endDate" value="-">
-	</div>
-
-	<div class="form-group">
-		<label>Type</label>
-		<select class="form-control" id="typeId" name="typeId">
-			<option value="All">全部</option>
-			<option value="Common">一般事項</option>
-			<option value="Electronic">請水電事項</option>
-		</select>
-	</div>
-
-	<input class="btn btn-primary" type="button" value="查詢" id="search">
-
-</div>
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/locales/bootstrap-datepicker.zh-TW.js"></script>
 </body>
 </html>
