@@ -76,7 +76,7 @@
 
 	<div class="form-group">
 		{{ Form::label('typeId', '類型') }}
-		{{ Form::select('typeId', array('0' => '預設事項', '1' => '水', '2' => '電'), Input::old('typeId'), array('class' => 'form-control')) }}
+		{{ Form::select('typeId', array('0' => '預設事項', '1' => '水', '2' => '電(新設)', '3' => '電(增設)', '4' => '電(分設)', '5' => '電(噴霧)'), Input::old('typeId'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">

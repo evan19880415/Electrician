@@ -22,6 +22,7 @@ class CreateCaseinfosTable extends Migration {
 			$table->string('phone', 255);
 			$table->string('mobile', 255);
 			$table->integer('typeId');
+			$table->string('invoice', 255);
 			$table->integer('money');
 			$table->integer('level');
 

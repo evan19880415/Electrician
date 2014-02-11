@@ -222,8 +222,17 @@ class CaseController extends \BaseController {
 		         $caseType = '水';
 		         break;
 		   case 2:
-		         $caseType = '電';
+		         $caseType = '電(新設)';
 		         break;
+		   case 3:
+		         $caseType = '電(增設)';
+		         break;
+		   case 4:
+		         $caseType = '電(分設)';
+		         break;
+		   case 5:
+		         $caseType = '電(噴霧)';
+		         break;                  
 		}
 
 		

@@ -54,8 +54,8 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '10.36.131.221',
-			'database'  => 'eletrician',
+			'host'      => 'localhost',
+			'database'  => 'Electrician',
 			'username'  => 'root',
 			'password'  => '770415',
 			'charset'   => 'utf8',
