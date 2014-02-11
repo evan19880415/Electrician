@@ -43,7 +43,8 @@ return array(
 	| choice installed on your machine before you begin development.
 	|
 	*/
-
+	//localhost, Electrician   
+	//10.36.131.221 eletrician
 	'connections' => array(
 
 		'sqlite' => array(

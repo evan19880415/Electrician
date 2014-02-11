@@ -12,7 +12,7 @@
 */
 Route::get('/', function()
 {
-	return View::make('login');
+	return Redirect::to('login');
 });
 
 Route::filter('admin_auth', function()
