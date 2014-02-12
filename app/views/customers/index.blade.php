@@ -149,14 +149,14 @@
 				window.location.href = window.location.pathname;
 			},
 			error: function(){
-				alert('The delete method failed.');        
+				alert('刪除客戶功能失敗，請聯繫資訊人員');        
 			}
 		});
 	});
 
 	//Customer Search
 	$("#searchButton").click(function(){
-	    var searchText = $('#searchText').val();
+	    var searchText = ($('#searchText').val()=='')?'-':$('#searchText').val();
 	    var path = "{{ URL::to('customerSearch') }}";
 
 		window.location.href = path+"/"+searchText;

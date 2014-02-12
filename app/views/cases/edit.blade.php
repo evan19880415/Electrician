@@ -110,6 +110,10 @@
 		{{ Form::text('money', Input::old('money'), array('class' => 'form-control')) }}
 	</div>
 
+	<div class="form-group">
+		{{ Form::hidden('requestUri', Input::old('requestUri'), array('class' => 'form-control')) }}
+	</div>
+{{ $requestUri }}
 	{{ Form::submit('編輯', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}

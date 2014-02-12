@@ -70,7 +70,7 @@ class CustomerController extends \BaseController {
 			$customers->save();
 
 			// redirect
-			Session::flash('message', 'Successfully created customer!');
+			Session::flash('message', '新增成功!');
 			return Redirect::to('customers');
 		}
 	}
@@ -139,7 +139,7 @@ class CustomerController extends \BaseController {
 			$customers->save();
 
 			// redirect
-			Session::flash('message', 'Successfully updated customer!');
+			Session::flash('message', '編輯成功!');
 			return Redirect::to('customers');
 		}
 	}
@@ -157,7 +157,7 @@ class CustomerController extends \BaseController {
 		$customer->delete();
 
 		// redirect
-		Session::flash('message', 'Successfully deleted the customer!');
+		Session::flash('message', '刪除成功!');
 		return 'success';
 	}
 

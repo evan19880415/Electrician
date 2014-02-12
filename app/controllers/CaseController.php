@@ -196,7 +196,7 @@ class CaseController extends \BaseController {
 			$case->save();
 
 			// redirect
-			Session::flash('message', 'Successfully created case!');
+			Session::flash('message', '新增成功!');
 			return Redirect::to('cases');
 		}
 	}
@@ -228,7 +228,7 @@ class CaseController extends \BaseController {
 		         $caseType = '電(增設)';
 		         break;
 		   case 4:
-		         $caseType = '電(分設)';
+		         $caseType = '電(分戶)';
 		         break;
 		   case 5:
 		         $caseType = '電(噴霧)';
@@ -267,10 +267,9 @@ class CaseController extends \BaseController {
 	{
 		// get the case
 		$case = Caseinfo::find($id);
-
+		
 		// show the edit form and pass the nerd
-		return View::make('cases.edit')
-			->with('case', $case);
+		return $case;
 	}
 
 	/**
@@ -292,9 +291,8 @@ class CaseController extends \BaseController {
 
 		// process the login
 		if ($validator->fails()) {
-			return Redirect::to('cases/' . $id . '/edit')
-				->withErrors($validator)
-				->withInput(Input::except('password'));
+			Session::flash('message', '編輯失敗! 請確認姓名和電話都有填寫');
+			return 'error';
 		} else {
 			// store
 			$case = Caseinfo::find($id);
@@ -313,9 +311,10 @@ class CaseController extends \BaseController {
 			}
 			$case->save();
 
+			$redirectUri = Input::get('requestUri');
 			// redirect
-			Session::flash('message', 'Successfully updated case!');
-			return Redirect::to('cases');
+			Session::flash('message', '編輯成功!');
+			return 'success';
 		}
 	}
 
@@ -342,7 +341,7 @@ class CaseController extends \BaseController {
 		$case->delete();
 
 		// redirect
-		Session::flash('message', 'Successfully deleted the case!');
+		Session::flash('message', '刪除成功!');
 		return 'success';
 	}
 
