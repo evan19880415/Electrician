@@ -199,6 +199,9 @@
 					{{ Form::label('money', '金額') }}
 					{{ Form::text('money', Input::old('money'), array('class' => 'form-control')) }}
 				</div>
+				<div class="form-group">
+					<input class="form-control" id ="level" name="level" type="hidden">
+				</div>
 				<div id="errorMessage"></div>	             
 	        </div>
 	        <div class="modal-footer">
@@ -253,7 +256,7 @@
 	            $('#mobile').val(data.mobile);
 	            $('#invoice').val(data.invoice);
 	            $('#money').val(data.money);
-
+	            $('#level').val(data.level);
 				$('#modal-edit').data('id', id).modal('show');
 			},	
 			error: function(){
@@ -277,7 +280,8 @@
 	            'phone': 		$('#phone').val(),
 	            'mobile': 		$('#mobile').val(),
 	            'invoice': 		$('#invoice').val(),
-	            'money': 		$('#money').val()
+	            'money': 		$('#money').val(),
+	            'level': 		$('#level').val()
 
 	        },
 			success: function(){

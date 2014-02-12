@@ -111,9 +111,9 @@
 	</div>
 
 	<div class="form-group">
-		{{ Form::hidden('requestUri', Input::old('requestUri'), array('class' => 'form-control')) }}
+		{{ Form::hidden('level', Input::old('level'), array('class' => 'form-control')) }}
 	</div>
-{{ $requestUri }}
+
 	{{ Form::submit('編輯', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}

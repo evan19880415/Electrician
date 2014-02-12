@@ -311,7 +311,6 @@ class CaseController extends \BaseController {
 			}
 			$case->save();
 
-			$redirectUri = Input::get('requestUri');
 			// redirect
 			Session::flash('message', '編輯成功!');
 			return 'success';
@@ -324,6 +323,8 @@ class CaseController extends \BaseController {
 		$case = Caseinfo::find($id);
 		$case->level = 1;
 		$case->save();
+
+		Session::flash('message', $case->name.'完工!');
 		// show the edit form and pass the nerd
 		return "Finished Case Success";
 	}
