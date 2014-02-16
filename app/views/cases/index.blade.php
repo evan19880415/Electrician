@@ -11,6 +11,12 @@
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-static-top">
@@ -48,6 +54,7 @@
 					<ul class="dropdown-menu">
 						<li><a tabindex="-1" href="{{ URL::to('cases/create') }}">新增事項</a></li>
 						<li><a tabindex="-1" href="{{ URL::to('casesSearch') }}">日期查詢</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('casesAdvanced') }}">進階功能</a></li>
 					</ul>
 				</li>
 				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">客戶相關</a>
