@@ -43,14 +43,20 @@ Route::group(array('before' => 'admin_auth'), function()
 	Route::get('commonCase/dateSearchCase/{startDate}/{endDate}','CaseController@commonDateSearchCase');
 	Route::get('electronicCase/dateSearchCase/{startDate}/{endDate}','CaseController@electronicDateSearchCase');
 
-	Route::get('casesSearch', function()
-	{
-		return View::make('cases.search');
-	});
+	//transfer case to customer
+	Route::post('transferToCustomer/{id}','CaseController@transferToCustomer');
+
+	Route::get('casesSearch', function(){return View::make('cases.search');});
 
 	//Customer
 	Route::resource('customers', 'CustomerController');
 	Route::get('customerSearch/{text}','CustomerController@customerSearch');
+
+	//accounting
+	Route::resource('accounting', 'AccountingController');
+
+	//bank
+	Route::controller('bankAccount', 'bankAccountController');
 
 });	
 

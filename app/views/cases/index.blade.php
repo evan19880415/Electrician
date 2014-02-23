@@ -55,7 +55,6 @@
 					<ul class="dropdown-menu">
 						<li><a tabindex="-1" href="{{ URL::to('cases/create') }}">新增事項</a></li>
 						<li><a tabindex="-1" href="{{ URL::to('casesSearch') }}">日期查詢</a></li>
-						<li><a tabindex="-1" href="{{ URL::to('casesAdvanced') }}">進階功能</a></li>
 					</ul>
 				</li>
 				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">客戶相關</a>
@@ -64,6 +63,15 @@
 						<li><a tabindex="-1" href="{{ URL::to('customers/create') }}">新增客戶</a></li>
 					</ul>
 				</li>
+				<!--<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">會計相關</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('bankAccount/create') }}">新增帳戶</a></li>
+						<li><a tabindex="-1" href="#">新增帳款</a></li>
+						<li class="divider"></li>
+						<li><a tabindex="-1" href="#">帳戶查詢</a></li>
+						<li><a tabindex="-1" href="#">報表</a></li>
+					</ul>
+				</li>-->
 				<li><a href="{{ URL::to('logout') }}">登出</a></li>
 			</ul>
         </div><!--/.nav-collapse -->
@@ -98,18 +106,23 @@
 					@if ($value->level == 0)
 							<a class="btn btn-xs btn-primary confirm-done" href="#" data-id="{{$value->id}}">完工</a>	
 					@elseif($value->level == 1)
-						<a class="btn btn-xs btn-primary" disabled="disabled" href="#">完工</a>
+						<a class="btn btn-xs btn-primary" disabled="disabled" href="#">未收款</a>
 					@else
 						<a class="btn btn-xs btn-warning" href="#">已收款</a>	
 					@endif
-					<!-- show the case (uses the show method found at GET /cases/{id} -->
-					<a class="btn btn-xs btn-success" href="{{ URL::to('cases/' . $value->id) }}">資料</a>
-
-					<!-- edit this case (uses the edit method found at GET /cases/{id}/edit -->
-					<a class="btn btn-xs btn-info confirm-edit" href="#" data-id="{{$value->id}}">編輯</a>
-
-					<a class="btn btn-xs btn-danger confirm-delete" href="#" data-id="{{$value->id}}">刪除</a>
-
+					<!-- Single button -->
+					<div class="btn-group">
+					  <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown">
+					    功能清單 <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+					    <li><a href="{{ URL::to('cases/' . $value->id) }}">資料</a></li>
+					    <li><a class="confirm-edit" href="#" data-id="{{$value->id}}">編輯</a></li>
+					    <li><a class="confirm-delete" href="#" data-id="{{$value->id}}">刪除</a></li>
+					    <li class="divider"></li>
+					    <li><a class="confirm-transfer" href="#" data-id="{{$value->id}}">新增至客戶</a></li>
+					  </ul>
+					</div>
 				</td>
 			</tr>
 		@endforeach
@@ -153,6 +166,25 @@
 	        </div>
 	        <div class="modal-footer">
 	          <a href="#" id="btnDeleteYes" class="btn btn-default">OK</a>
+	          <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Cancel</a>
+	        </div>
+	      </div>
+	    </div>
+	</div>
+
+	<!--Transfer Comfirm Dialog-->
+	<div id="modal-transfer" class="modal">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+	            <h3>轉換至客戶?</h3>
+	        </div>
+	        <div class="modal-body">
+	             <p>若確定將此事項資料新增至客戶，點選'OK'</p>
+	        </div>
+	        <div class="modal-footer">
+	          <a href="#" id="btnTransferYes" class="btn btn-default">OK</a>
 	          <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Cancel</a>
 	        </div>
 	      </div>
@@ -241,6 +273,29 @@
 			},
 			error: function(){
 				alert('完工功能失敗，請聯繫資訊人員');        
+			}
+		});
+	});
+
+	//handle transfer comfirm dialog modal
+	$('.confirm-transfer').on('click', function(e) {
+		e.preventDefault();
+
+		var id = $(this).data('id');
+		$('#modal-transfer').data('id', id).modal('show');
+	});
+	$('#btnTransferYes').click(function() {
+		// handle deletion here
+		var id = $('#modal-transfer').data('id');
+		var path = "{{ URL::to('transferToCustomer/') }}";
+		$.ajax({
+			url: path+"/"+id,
+			type: 'POST',
+			success: function(){
+				window.location.href = "{{ URL::to('customers') }}";
+			},
+			error: function(){
+				alert('轉換功能失敗，請聯繫資訊人員');        
 			}
 		});
 	});

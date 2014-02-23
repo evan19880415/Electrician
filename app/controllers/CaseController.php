@@ -346,4 +346,22 @@ class CaseController extends \BaseController {
 		return 'success';
 	}
 
+	public function transferToCustomer($id)
+	{
+			// store
+			$case = Caseinfo::find($id);
+
+			$customers = new Customer;
+			$customers->name        = $case->name;
+			$customers->address 	= $case->address ;
+			$customers->phone 		= $case->phone;
+			$customers->mobile 		= $case->mobile;
+
+			$customers->save();
+
+			// redirect
+			Session::flash('message', '轉換成功!');
+			return 'success';
+	}	
+
 }
