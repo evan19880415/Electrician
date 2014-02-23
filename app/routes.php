@@ -53,10 +53,10 @@ Route::group(array('before' => 'admin_auth'), function()
 	Route::get('customerSearch/{text}','CustomerController@customerSearch');
 
 	//accounting
-	Route::resource('accounting', 'AccountingController');
+	//Route::resource('accounting', 'AccountingController');
 
 	//bank
-	Route::controller('bankAccount', 'bankAccountController');
+	//Route::controller('bankAccount', 'bankAccountController');
 
 });	
 
