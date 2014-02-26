@@ -98,6 +98,15 @@ class CaseController extends \BaseController {
 			->with('cases', $cases);
 	}
 
+	public function electronicPaidCase()
+	{
+		// get all the getElectronicPaidCase
+		$cases = Caseinfo::where('level', '=',2)->get();
+
+		// load the view and pass the cases
+		return $cases;
+	}	
+
 	public function dateSearchCase($startDate,$endDate)
 	{
 		// get all the dateSearchCase
@@ -255,6 +264,7 @@ class CaseController extends \BaseController {
 			->with('case', $case)
 			->with('caseType', $caseType)
 			->with('caseLevel', $caseLevel);
+		
 	}
 
 	/**

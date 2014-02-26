@@ -1,4 +1,4 @@
-<!-- app/views/cases/edit.blade.php -->
+<!-- app/views/caes/index.blade.php -->
 
 <!DOCTYPE html>
 <html>
@@ -18,6 +18,8 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    @yield('css')
+    @yield('js')
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-static-top">
@@ -63,6 +65,17 @@
 						<li><a tabindex="-1" href="{{ URL::to('customers/create') }}">新增客戶</a></li>
 					</ul>
 				</li>
+				@if(Auth::user()->groupId == 1)
+				<li class="dropdown-toggle"><a href="#" class="dropdown-toggle" data-toggle="dropdown">會計相關</a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1" href="{{ URL::to('bankAccount/create') }}">新增帳戶</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('accountings/create') }}">新增帳款</a></li>
+						<li class="divider"></li>
+						<li><a tabindex="-1" href="{{ URL::to('accountings') }}">月報表</a></li>
+						<li><a tabindex="-1" href="{{ URL::to('indexYear') }}">年報表</a></li>
+					</ul>
+				</li>
+				@endif
 				<li><a href="{{ URL::to('logout') }}">登出</a></li>
 			</ul>
         </div><!--/.nav-collapse -->
@@ -70,62 +83,10 @@
 </div>
 <div class="container">
 
-<h1>編輯 - {{ $case->name }}</h1>
-
-<!-- if there are creation errors, they will show here -->
-{{ HTML::ul($errors->all()) }}
-
-{{ Form::model($case, array('route' => array('cases.update', $case->id), 'method' => 'PUT')) }}
-
-	<div class="form-group">
-		{{ Form::label('name', '姓名') }}
-		{{ Form::text('name', Input::old('name'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('typeId', '類型') }}
-		{{ Form::select('typeId', array('0' => '預設事項', '1' => '水', '2' => '電(新設)', '3' => '電(增設)', '4' => '電(分戶)', '5' => '電(噴霧)'), Input::old('typeId'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('description', '工作內容') }}
-		{{ Form::text('description', Input::old('description'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('address', '住址') }}
-		{{ Form::text('address', Input::old('address'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('phone', '電話') }}
-		{{ Form::text('phone', Input::old('phone'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('mobile', '手機') }}
-		{{ Form::text('mobile', Input::old('mobile'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('invoice', '發票號碼') }}
-		{{ Form::text('invoice', Input::old('invoice'), array('class' => 'form-control')) }}
-	</div>
-	
-	<div class="form-group">
-		{{ Form::label('money', '金額') }}
-		{{ Form::text('money', Input::old('money'), array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::hidden('level', Input::old('level'), array('class' => 'form-control')) }}
-	</div>
-
-	{{ Form::submit('編輯', array('class' => 'btn btn-primary')) }}
-
-{{ Form::close() }}
+@yield('content')
 
 </div>
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 </body>

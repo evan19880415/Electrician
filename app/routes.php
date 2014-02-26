@@ -26,6 +26,10 @@ Route::group(array('before' => 'admin_auth'), function()
 {
 	//Caes
 	Route::resource('cases', 'CaseController');
+
+	//provide paid case
+	Route::get('electronicPaidCase', 'CaseController@electronicPaidCase');
+	
 	Route::post('finishedCase/{id}','CaseController@finishedCase');
 
 	Route::get('commonCase','CaseController@commonCase');
@@ -53,10 +57,14 @@ Route::group(array('before' => 'admin_auth'), function()
 	Route::get('customerSearch/{text}','CustomerController@customerSearch');
 
 	//accounting
-	//Route::resource('accounting', 'AccountingController');
+	Route::resource('accountings', 'AccountingController');
+	Route::get('indexYear','AccountingController@indexYear');
+	Route::get('revenueYearReport/{year}','AccountingController@revenueYearReport');
+	Route::get('revenueMonthReport/{year}/{month}','AccountingController@revenueMonthReport');
 
 	//bank
-	//Route::controller('bankAccount', 'bankAccountController');
+	Route::controller('bankAccount', 'BankAccountController');
+	Route::controller('bankCheck', 'BankCheckController');
 
 });	
 

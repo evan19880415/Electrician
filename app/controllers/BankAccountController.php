@@ -7,7 +7,14 @@ class BankAccountController extends \BaseController {
 	 *
 	 * @return Response
 	 */
+	public function getIndex()
+	{
+	    //
+	    $bankAccount = BankAccount::all();
 
+	    return $bankAccount;
+
+	}
 	public function getCreate()
     {
         //
