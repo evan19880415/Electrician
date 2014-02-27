@@ -24,8 +24,12 @@ Route::filter('auth', function()
 
 Route::filter('admin', function()
 {
-    if(Auth::user()->groupId <> 1) {
-        return Response::view('errors.403', array(), 403);
+    if(Auth::guest() || Auth::user()=='') {
+        return Redirect::to('login');
+    }else{   	
+	    if(Auth::user()->groupId <> 1) {
+	        return Response::view('errors.403', array(), 403);
+	    }
     }
 });
 
