@@ -237,7 +237,20 @@ class AccountingController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		// delete
+		$accounting = Accounting::find($id);
+		if($accounting->money_id <> 2){
+			$accounting->delete();
+		}else{
+			$bankCheck = BankCheck::find($accounting->money_ref);
+			$bankCheck->delete();
+			$accounting->delete();
+		}
+		
+		
+		// redirect
+		Session::flash('message', '刪除帳款成功!');
+		return 'success';
 	}
 
 }

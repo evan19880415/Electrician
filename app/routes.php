@@ -15,14 +15,21 @@ Route::get('/', function()
 	return Redirect::to('login');
 });
 
-Route::filter('admin_auth', function()
+Route::filter('auth', function()
 {
     if(Auth::guest() || Auth::user()=='') {
         return Redirect::to('login');
     }
 });
 
-Route::group(array('before' => 'admin_auth'), function()
+Route::filter('admin', function()
+{
+    if(Auth::user()->groupId <> 1) {
+        return Response::view('errors.403', array(), 403);
+    }
+});
+
+Route::group(array('before' => 'auth'), function()
 {
 	//Caes
 	Route::resource('cases', 'CaseController');
@@ -56,6 +63,10 @@ Route::group(array('before' => 'admin_auth'), function()
 	Route::resource('customers', 'CustomerController');
 	Route::get('customerSearch/{text}','CustomerController@customerSearch');
 
+});	
+
+Route::group(array('before' => 'admin'), function()
+{
 	//accounting
 	Route::resource('accountings', 'AccountingController');
 	Route::get('indexYear','AccountingController@indexYear');
@@ -65,8 +76,7 @@ Route::group(array('before' => 'admin_auth'), function()
 	//bank
 	Route::controller('bankAccount', 'BankAccountController');
 	Route::controller('bankCheck', 'BankCheckController');
-
-});	
+});
 
 // route to show the login formcases
 Route::get('login', array('uses' => 'HomeController@showLogin'));

@@ -42,7 +42,7 @@
 			</div>
 		</div>		
 	</div>
-	<div class="row">
+	<div>
 		<h2>收支表</h2>
 		<br>
 		<table class="table table-bordered">
@@ -59,7 +59,7 @@
 				@foreach($accountings as $key => $value)
 					<tr>
 						<td>{{ $value->created_date }}</td>
-						<td>{{ $value->name }}</td>
+						<td class="colName" data-id="{{$value->id}}" data-name="{{$value->name}}">{{ $value->name }}</td>
 						@if ($value->money_id == 0)
 							<td><span class="btn btn-xs btn-primary">現金</span></td>
 						@elseif($value->money_id == 1)
@@ -121,6 +121,24 @@
 	        </div>
 	      </div>
 	    </div>
+	</div>
+		<!--bankCheck Comfirm Dialog-->
+	<div id="modal-delete" class="modal">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+	            <h3>刪除帳款</h3>
+	        </div>
+	        <div id="modal-body" class="modal-body">
+	            <!--Get from long press-->
+	        </div>
+	        <div class="modal-footer">
+	          <a href="#" id="btnDeleteYes" class="btn btn-default">OK</a>
+	          <a href="#" id="btnDeleteNo" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Cancel</a>
+	        </div>
+	      </div>
+	    </div>
 	</div>	
 	<script>
 		//chart handle
@@ -149,6 +167,52 @@
 			animationEasing: 'easeOutBounce'
 		});
 
+		//handle edit bankCheck comfirm dialog modal
+		$('#bankCheck').on('click', function(e) {
+			e.preventDefault();
+
+			var id = $(this).data('id');
+			var path = "{{ URL::to('bankCheck/index-byid') }}";
+
+			$.ajax({
+				url: path+"/"+id,
+				type: 'GET',
+				success: function(data){
+					$('#created_at').val(data.created_date);
+		            $('#check_number').val(data.check_number);
+		            $('#expired_at').val(data.expired_date);
+		            $('#check_notes').val(data.notes);
+
+					$('#modal-bankCheck').data('id', id).modal('show');
+				},	
+				error: function(){
+					alert('支票讀取失敗，請聯繫資訊人員');        
+				}
+			});
+		});
+
+		$('#btnEditYes').click(function() {
+		// handle deletion here
+			var id = $('#modal-bankCheck').data('id');
+			var path = "{{ URL::to('bankCheck/update-byid') }}";
+			$.ajax({
+				url: path+"/"+id,
+				type: 'PUT',
+				data: {
+		            'created_date': $('#created_at').val(),
+		            'check_number': $('#check_number').val(),
+		            'expired_date': $('#expired_at').val(),
+		            'notes': 		$('#check_notes').val()
+		        },
+				success: function(){
+						window.location.href = window.location.pathname;
+				},
+				error: function(){
+					alert('編輯支票功能失敗，請聯繫資訊人員');        
+				}
+			});
+		});
+
 		//handle edit comfirm dialog modal
 		$('#bankCheck').on('click', function(e) {
 			e.preventDefault();
@@ -171,29 +235,9 @@
 					alert('支票讀取失敗，請聯繫資訊人員');        
 				}
 			});
+		});
 
-		});
-		$('#btnEditYes').click(function() {
-		// handle deletion here
-			var id = $('#modal-bankCheck').data('id');
-			var path = "{{ URL::to('bankCheck/update-byid') }}";
-			$.ajax({
-				url: path+"/"+id,
-				type: 'PUT',
-				data: {
-		            'created_date': $('#created_at').val(),
-		            'check_number': $('#check_number').val(),
-		            'expired_date': $('#expired_at').val(),
-		            'notes': 		$('#check_notes').val()
-		        },
-				success: function(){
-						window.location.href = window.location.pathname;
-				},
-				error: function(){
-					alert('編輯支票功能失敗，請聯繫資訊人員');        
-				}
-			});
-		});
+		//choose date
 		$('#report_at').click(function(){
 		   this.blur();
 		});
@@ -204,6 +248,7 @@
 	    		viewMode: "months", 
     			minViewMode: "months"
 		});
+
 		//Generate Month Report
 		$("#searchButton").click(function(){
 			if($('#report_at').val()==''){
@@ -215,6 +260,40 @@
 				window.location.href = path+"/"+splitText[0]+"/"+splitText[1];
 			}
 		});
+
+		//
+		var pressTimer;
+		$(".colName").mouseup(function(){
+		  	clearTimeout(pressTimer)
+		  	// Clear timeout
+		  	return false;
+		}).mousedown(function(){
+		  
+			var id = $(this).data('id');
+			var name = $(this).data('name');
+		  	// Set timeout
+		  	pressTimer = window.setTimeout(function() {
+		  		$('#modal-body').empty();
+		  		$('#modal-body').append("<p>確認刪除'"+name+"'嗎?</p>");
+		  		$('#modal-delete').data('id', id).modal('show');
+		  	},500)
+		  	return false; 
+		});
+		$('#btnDeleteYes').click(function() {
+			// handle deletion here
+			var id = $('#modal-delete').data('id');
+			var deletePath = "{{ URL::to('accountings/') }}";
+			$.ajax({
+				url: deletePath+"/"+id,
+				type: 'DELETE',
+				success: function(){
+					window.location.href = window.location.pathname;
+				},
+				error: function(){
+					alert('刪除帳款功能失敗，請聯繫資訊人員');        
+				}
+			});
+		});	
 	</script>
 
 	<style type="text/css">

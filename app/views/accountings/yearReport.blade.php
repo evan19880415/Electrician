@@ -113,7 +113,7 @@
 			</table>
 		</div>		
 	</div>
-	<div class="row">
+	<div>
 		<h2>收支表</h2>
 		<br>
 		<table class="table table-bordered">
@@ -205,12 +205,12 @@
 			labels : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 			datasets : [
 				{
-					fillColor : "rgba(220,220,220,0.5)",
+					fillColor : "#69D2E7",
 					strokeColor : "rgba(220,220,220,1)",
 					data : income
 				},
 				{
-					fillColor : "rgba(151,187,205,0.5)",
+					fillColor : "#F38630",
 					strokeColor : "rgba(151,187,205,1)",
 					data : outcome
 				}
