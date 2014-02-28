@@ -10,7 +10,7 @@ class CaseController extends \BaseController {
 	public function index()
 	{
 		// get all the case
-		$cases = Caseinfo::paginate(10);
+		$cases = Caseinfo::orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '所有事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -21,7 +21,7 @@ class CaseController extends \BaseController {
 	public function commonCase()
 	{
 		// get all the CommonCase
-		$cases = Caseinfo::where('typeId', '==',0)->paginate(10);
+		$cases = Caseinfo::where('typeId', '==',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '一般事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -31,7 +31,7 @@ class CaseController extends \BaseController {
 	public function electronicCase()
 	{
 		// get all the ElectronicCase
-		$cases = Caseinfo::where('typeId', '<>',0)->paginate(10);
+		$cases = Caseinfo::where('typeId', '<>',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '請水電事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -41,7 +41,7 @@ class CaseController extends \BaseController {
 	public function completedCase()
 	{
 		// get all the CompletedCase
-		$cases = Caseinfo::where('level', '<>',0)->paginate(10);
+		$cases = Caseinfo::where('level', '<>',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '完工事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -51,7 +51,7 @@ class CaseController extends \BaseController {
 	public function commonCompletedCase()
 	{
 		// get all the commonCompletedCase
-		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',0)->paginate(10);
+		$cases = Caseinfo::where('typeId', '=',0)->where('level', '<>',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '完工事項(一般)');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -61,7 +61,7 @@ class CaseController extends \BaseController {
 	public function electronicCompletedCase()
 	{
 		// get all the electronicCompletedCase
-		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',0)->paginate(10);
+		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '完工事項(請水電)');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -71,7 +71,7 @@ class CaseController extends \BaseController {
 	public function unfinishedCase()
 	{
 		// get all the unfinishedCase
-		$cases = Caseinfo::where('created_at', '<>',1)->paginate(10);
+		$cases = Caseinfo::where('level', '=',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '未完工事項');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -81,7 +81,7 @@ class CaseController extends \BaseController {
 	public function commonUnfinishedCase()
 	{
 		// get all the commonUnfinishedCase
-		$cases = Caseinfo::where('typeId', '==',0)->where('level', '<>',1)->paginate(10);
+		$cases = Caseinfo::where('typeId', '=',0)->where('level', '=',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '未完工事項(一般)');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -91,7 +91,7 @@ class CaseController extends \BaseController {
 	public function electronicUnfinishedCase()
 	{
 		// get all the electronicUnfinishedCase
-		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '<>',1)->paginate(10);
+		$cases = Caseinfo::where('typeId', '<>',0)->where('level', '=',0)->orderBy('created_at', 'DESC')->paginate(10);
 		Session::flash('caseTitle', '未完工事項(請水電)');
 		// load the view and pass the cases
 		return View::make('cases.index')
@@ -255,6 +255,9 @@ class CaseController extends \BaseController {
   			case 2:
 			    $caseLevel = '已收款';
 			    break;
+			case 3:
+			    $caseLevel = '已收款且入帳';
+			    break;    
 		}
 		
 		
