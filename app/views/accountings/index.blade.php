@@ -245,7 +245,8 @@
 			    format: "yyyy-mm",
 	    		autoclose: true,
 	    		language: 'zh-TW',
-    			startView: 1
+	    		viewMode: "months", 
+    			minViewMode: "months"
 		});
 
 		//Generate Month Report
