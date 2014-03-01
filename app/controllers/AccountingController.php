@@ -21,6 +21,12 @@ class AccountingController extends \BaseController {
 		$accountings = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->orderBy('created_date', 'ASC')->get();
 		$income = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');
 		$outcome = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '1')->sum('money');
+		if($income == null){
+			$income = 0;
+		}
+		if($outcome == null){
+			$outcome = 0;
+		}
 		$revenue = $income-$outcome;
 
 		return View::make('accountings.index')
