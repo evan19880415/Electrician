@@ -9,33 +9,10 @@ class AccountingController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
 		$date = new Date('today');
-		$nextDate = new Date('next month');
 		$year = $date->getYear();
 		$month = $date->getMonth();
-		$nextMonth = $nextDate->getMonth();
-		$current_month = new Date($year.'-'.$month.'-01');
-		$next_month = new Date($year.'-'.$nextMonth.'-01');
-
-		$accountings = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->orderBy('created_date', 'ASC')->get();
-		$income = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');
-		$outcome = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '1')->sum('money');
-		if($income == null){
-			$income = 0;
-		}
-		if($outcome == null){
-			$outcome = 0;
-		}
-		$revenue = $income-$outcome;
-
-		return View::make('accountings.index')
-				->with('accountings',$accountings)
-				->with('income',$income)
-				->with('outcome',$outcome)
-				->with('revenue',$revenue)
-				->with('year',$year)
-				->with('month',$month);
+		return Redirect::to('revenueMonthReport/'.$year.'/'.$month);
 	}
 
 	public function indexYear()
@@ -50,10 +27,16 @@ class AccountingController extends \BaseController {
 
 		$year = $currentDate->getYear();
 		$month = $currentDate->getMonth();
-		$nextMonth = (int)$month+1;
+		if($month == 12){
+			$nextYear = (int)$year+1;
+			$current_month = new Date($year.'-'.$month.'-01');
+			$next_month = new Date((string)$nextYear.'-01'.'-01');
+		}else{
+			$nextMonth = (int)$month+1;
 
-		$current_month = new Date($year.'-'.$month.'-01');
-		$next_month = new Date($year.'-'.(string)$nextMonth.'-01');
+			$current_month = new Date($year.'-'.$month.'-01');
+			$next_month = new Date($year.'-'.(string)$nextMonth.'-01');
+		}
 
 		$accountings = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->orderBy('created_date', 'ASC')->get();
 		$income = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');

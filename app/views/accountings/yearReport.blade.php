@@ -16,7 +16,7 @@
 		<div class="col-md-4">
 			<h1>
 				<div class="input-group">
-					<input class="form-control" name="report_at" type="text" id="report_at" placeholder="輸入想搜尋的年分">
+					<input class="form-control" name="report_at" type="text" id="report_at" placeholder="輸入想搜尋的年分, 例如: 2015">
 					<div class="input-group-btn">
 			            <button class="btn btn-default" type="submit" id="searchButton"><i class="glyphicon glyphicon-search"></i></button>
 			        </div>
