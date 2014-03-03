@@ -38,9 +38,9 @@ class AccountingController extends \BaseController {
 			$next_month = new Date($year.'-'.(string)$nextMonth.'-01');
 		}
 
-		$accountings = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->orderBy('created_date', 'ASC')->get();
-		$income = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');
-		$outcome = Accounting::where('created_date', '>', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '1')->sum('money');
+		$accountings = Accounting::where('created_date', '>=', $current_month)->where('created_date', '<', $next_month)->orderBy('created_date', 'ASC')->get();
+		$income = Accounting::where('created_date', '>=', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');
+		$outcome = Accounting::where('created_date', '>=', $current_month)->where('created_date', '<', $next_month)->where('type', '=', '1')->sum('money');
 		if($income == null){
 			$income = 0;
 		}
@@ -76,12 +76,12 @@ class AccountingController extends \BaseController {
 
 			//handle December
 			if($nextMonth == 13){
-				$monthInfo[$i]['income'] = Accounting::where('created_date', '>', $month)->where('created_date', '<', $next_year)->where('type', '=', '0')->sum('money');
-				$monthInfo[$i]['outcome'] = Accounting::where('created_date', '>', $month)->where('created_date', '<', $next_year)->where('type', '=', '1')->sum('money');
+				$monthInfo[$i]['income'] = Accounting::where('created_date', '>=', $month)->where('created_date', '<', $next_year)->where('type', '=', '0')->sum('money');
+				$monthInfo[$i]['outcome'] = Accounting::where('created_date', '>=', $month)->where('created_date', '<', $next_year)->where('type', '=', '1')->sum('money');
 			}else{
 				$next_month = new Date($year.'-'.(string)$nextMonth.'-01');
-				$monthInfo[$i]['income'] = Accounting::where('created_date', '>', $month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');
-				$monthInfo[$i]['outcome'] = Accounting::where('created_date', '>', $month)->where('created_date', '<', $next_month)->where('type', '=', '1')->sum('money');
+				$monthInfo[$i]['income'] = Accounting::where('created_date', '>=', $month)->where('created_date', '<', $next_month)->where('type', '=', '0')->sum('money');
+				$monthInfo[$i]['outcome'] = Accounting::where('created_date', '>=', $month)->where('created_date', '<', $next_month)->where('type', '=', '1')->sum('money');
 			}
 
 			if($monthInfo[$i]['income'] == null){
@@ -91,10 +91,10 @@ class AccountingController extends \BaseController {
 				$monthInfo[$i]['outcome'] = 0;
 			}
 		}
-		$accountings = Accounting::where('created_date', '>', $current_year)->where('created_date', '<', $next_year)->orderBy('created_date', 'ASC')->get();
-		$income = Accounting::where('created_date', '>', $current_year)->where('created_date', '<', $next_year)->where('type', '=', '0')->sum('money');
-		$outcome = Accounting::where('created_date', '>', $current_year)->where('created_date', '<', $next_year)->where('type', '=', '1')->sum('money');
-		$maxMoney = Accounting::where('created_date', '>', $current_year)->where('created_date', '<', $next_year)->max('money');
+		$accountings = Accounting::where('created_date', '>=', $current_year)->where('created_date', '<', $next_year)->orderBy('created_date', 'ASC')->get();
+		$income = Accounting::where('created_date', '>=', $current_year)->where('created_date', '<', $next_year)->where('type', '=', '0')->sum('money');
+		$outcome = Accounting::where('created_date', '>=', $current_year)->where('created_date', '<', $next_year)->where('type', '=', '1')->sum('money');
+		$maxMoney = Accounting::where('created_date', '>=', $current_year)->where('created_date', '<', $next_year)->max('money');
 		
 		if($income == null){
 			$income = 0;
