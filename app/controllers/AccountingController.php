@@ -69,7 +69,7 @@ class AccountingController extends \BaseController {
 
 		$monthInfo = array();
 
-		//$i = month
+		//$i = month check Dec
 		for($i=1;$i<=12;$i++){
 			$month = new Date($year.'-'.$i.'-01');
 			$nextMonth = (int)$i+1;

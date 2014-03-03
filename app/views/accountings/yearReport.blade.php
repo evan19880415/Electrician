@@ -32,83 +32,24 @@
 			<canvas id="canvas" height="480" width="780"></canvas>
 		</div>
 		<div class="col-md-3">
-			<table class="table table-bordered">
-				<tr>
+			<table class="table table-bordered" id="monthTable">
+				<tr id="startTable">
 					<td>日期</td>
 					<td>收入</td>
 					<td>支出</td>
 				</tr>
-				<tr>
-					<td>一月</td>
-					<td>{{ $monthInfo[1]["income"] }}</td>
-					<td>{{ $monthInfo[1]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>二月</td>
-					<td>{{ $monthInfo[2]["income"] }}</td>
-					<td>{{ $monthInfo[2]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>三月</td>
-					<td>{{ $monthInfo[3]["income"] }}</td>
-					<td>{{ $monthInfo[3]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>四月</td>
-					<td>{{ $monthInfo[4]["income"] }}</td>
-					<td>{{ $monthInfo[4]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>五月</td>
-					<td>{{ $monthInfo[5]["income"] }}</td>
-					<td>{{ $monthInfo[5]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>六月</td>
-					<td>{{ $monthInfo[6]["income"] }}</td>
-					<td>{{ $monthInfo[6]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>七月</td>
-					<td>{{ $monthInfo[7]["income"] }}</td>
-					<td>{{ $monthInfo[7]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>八月</td>
-					<td>{{ $monthInfo[8]["income"] }}</td>
-					<td>{{ $monthInfo[8]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>九月</td>
-					<td>{{ $monthInfo[9]["income"] }}</td>
-					<td>{{ $monthInfo[9]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>十月</td>
-					<td>{{ $monthInfo[10]["income"] }}</td>
-					<td>{{ $monthInfo[10]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>十一月</td>
-					<td>{{ $monthInfo[11]["income"] }}</td>
-					<td>{{ $monthInfo[11]["outcome"] }}</td>
-				</tr>
-				<tr>
-					<td>十二月</td>
-					<td>{{ $monthInfo[12]["income"] }}</td>
-					<td>{{ $monthInfo[12]["outcome"] }}</td>
-				</tr>
-				<tr>
+				
+				<tr id="endTable">
 					<td>總收入</td>
-					<td colspan="2">{{$income}}</td>
+					<td colspan="2" align="right">{{$income}}</td>
 				</tr>
 				<tr>
 					<td>總支出</td>
-					<td colspan="2">{{$outcome}}</td>
+					<td colspan="2" align="right">{{$outcome}}</td>
 				</tr>
 				<tr>
 					<td>營業額</td>
-					<td colspan="2">{{$revenue}}</td>
+					<td colspan="2" align="right">{{$revenue}}</td>
 				</tr>
 			</table>
 		</div>		
@@ -282,6 +223,19 @@
 				window.location.href = path+"/"+searchText;
 			}
 		});
+
+		//generate detail
+		var monthArray = ["","一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
+		@for($i=1;$i<=12;$i++)
+			$("#endTable").before(
+				"<tr>"+
+					"<td>"+monthArray[{{ $i }}]+"</td>"+
+					"<td align='right'>"+{{ $monthInfo[$i]["income"] }}+"</td>"+
+					"<td align='right'>"+{{ $monthInfo[$i]["outcome"] }}+"</td>"+
+				"</tr>"
+			);
+		@endfor
+		
 	</script>
 
 	<style type="text/css">
