@@ -206,7 +206,7 @@ class CaseController extends \BaseController {
 
 			// redirect
 			Session::flash('message', '新增成功!');
-			return Redirect::to('cases');
+			return Redirect::to('cases/create');
 		}
 	}
 

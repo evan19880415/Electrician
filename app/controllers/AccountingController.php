@@ -181,7 +181,7 @@ class AccountingController extends \BaseController {
 
 			// redirect
 			Session::flash('message', '新增帳款成功!');
-			return Redirect::to('accountings');
+			return Redirect::to('accountings/create');
 		}
 	}
 

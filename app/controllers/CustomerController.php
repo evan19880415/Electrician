@@ -71,7 +71,7 @@ class CustomerController extends \BaseController {
 
 			// redirect
 			Session::flash('message', '新增成功!');
-			return Redirect::to('customers');
+			return Redirect::to('customers/create');
 		}
 	}
 

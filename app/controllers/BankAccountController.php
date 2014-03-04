@@ -31,7 +31,7 @@ class BankAccountController extends \BaseController {
 
 		// redirect
 		Session::flash('message', '新增帳戶成功!');
-		return Redirect::to('cases');    //
+		return Redirect::to('bankAccount/create');    //
     }
 
 }
