@@ -77,7 +77,7 @@
 						@elseif($value->money_id == 1)
 							<td><span class="btn btn-xs btn-warning">匯款</span></td>
 						@else
-							<td><a class="btn btn-xs btn-danger" id="bankCheck" href="#" data-id="{{$value->money_ref}}">支票</a></td>
+							<td><a class="btn btn-xs btn-danger bankCheck" href="#" data-id="{{$value->money_ref}}">支票</a></td>
 						@endif
 
 						@if ($value->type == 0)
@@ -168,7 +168,7 @@
 		});
 
 		//handle edit comfirm dialog modal
-		$('#bankCheck').on('click', function(e) {
+		$('.bankCheck').on('click', function(e) {
 			e.preventDefault();
 
 			var id = $(this).data('id');
