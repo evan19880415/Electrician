@@ -65,7 +65,7 @@
 						@elseif($value->money_id == 1)
 							<td><span class="btn btn-xs btn-warning">匯款</span></td>
 						@else
-							<td><a class="btn btn-xs btn-danger" id="bankCheck" href="#" data-id="{{$value->money_ref}}">支票</a></td>
+							<td><a class="btn btn-xs btn-danger bankCheck" href="#" data-id="{{$value->money_ref}}">支票</a></td>
 						@endif
 
 						@if ($value->type == 0)
@@ -141,6 +141,7 @@
 	    </div>
 	</div>	
 	<script>
+	$(function(){
 		//chart handle
 		var pieData = [
 			{
@@ -168,7 +169,7 @@
 		});
 
 		//handle edit bankCheck comfirm dialog modal
-		$('#bankCheck').on('click', function(e) {
+		$('.bankCheck').on('click', function(e) {
 			e.preventDefault();
 
 			var id = $(this).data('id');
@@ -209,30 +210,6 @@
 				},
 				error: function(){
 					alert('編輯支票功能失敗，請聯繫資訊人員');        
-				}
-			});
-		});
-
-		//handle edit comfirm dialog modal
-		$('#bankCheck').on('click', function(e) {
-			e.preventDefault();
-
-			var id = $(this).data('id');
-			var path = "{{ URL::to('bankCheck/index-byid') }}";
-
-			$.ajax({
-				url: path+"/"+id,
-				type: 'GET',
-				success: function(data){
-					$('#created_at').val(data.created_date);
-		            $('#check_number').val(data.check_number);
-		            $('#expired_at').val(data.expired_date);
-		            $('#check_notes').val(data.notes);
-
-					$('#modal-bankCheck').data('id', id).modal('show');
-				},	
-				error: function(){
-					alert('支票讀取失敗，請聯繫資訊人員');        
 				}
 			});
 		});
@@ -293,7 +270,8 @@
 					alert('刪除帳款功能失敗，請聯繫資訊人員');        
 				}
 			});
-		});	
+		});
+	});		
 	</script>
 
 	<style type="text/css">
